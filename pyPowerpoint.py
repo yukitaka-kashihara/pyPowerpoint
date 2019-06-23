@@ -1,34 +1,36 @@
 from pptx import Presentation
-# テンプレート用ファイルの読み込み
-prs = Presentation('/home/yuki/Downloads/trendTemplate.pptx')
 
+# コンテンツの定義
 name = "柏原 幸隆（かしはら ゆきたか）"
 contents = \
-"""
-第２新卒エンジニア採用
+"""第２新卒エンジニア採用
 趣味：プログラミング、読書
-好きな製品：Deep Security
+好きな製品：DeepSecurity
 好きな技術：Python、Linux
-マイブーム：Docker、Djnago
+マイブーム：Docker、Djnago、MySQL
 
-こちらのスライドはPythonで作成しました
-Github：
+こちらのスライドはPythonで作成しました。
+ソース：https://github.com/yukitaka-kashihara/pyPowerpoint"""
 
-"""
+def main():
+    #テンプレートの読み込み
+    prs = Presentation('/home/yuki/Downloads/trendTemplate.pptx')
 
-print("start")
-for ns, slide in enumerate(prs.slides):
-    for nsh, shape in enumerate(slide.shapes):
-        if not shape.has_text_frame:
-            continue
-        for np, paragraph in enumerate(shape.text_frame.paragraphs):
-            for rs, run in enumerate(paragraph.runs):
-                if run.text  == 'title':
-                    run.text = name
-                
-                if run.text == 'Contents':
-                    run.text = contents
+    #テンプレートスライドを取得して、該当する部分にコンテンツを挿入
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if not shape.has_text_frame:
+                continue
+            for paragraph in shape.text_frame.paragraphs:
+                for run in paragraph.runs:
+                    if run.text  == 'title':
+                        run.text = name
+                    
+                    if run.text == 'Contents':
+                        run.text = contents
 
-prs.save('/home/yuki/Downloads/test1.pptx')
-print("end")
+    #結果を別ファイルで出力
+    prs.save('/home/yuki/Downloads/outputSlide.pptx')
 
+if __name__ == '__main__':
+    main()
